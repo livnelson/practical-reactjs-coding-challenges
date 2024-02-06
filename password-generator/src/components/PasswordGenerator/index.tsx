@@ -12,7 +12,28 @@ import refreshIcon from '../../assets/icons/refresh.svg'
 import './index.css'
 
 const PasswordGenerator = () => {
-  const [passwordLength, setPasswordLength] = useState<number>(10)
+  const [passwordLength, setPasswordLength] = useState<number>(8)
+  
+  // Function to generate random password string
+  const generateRandomPassword = () => {
+    const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz'
+    const numberChars = '0123456789'
+    const specialChars = '!@#$%^&*()_+{}[]|:;"<>,.?/~'
+
+    const allChars = uppercaseChars + lowercaseChars + numberChars + specialChars
+
+    // Function to set inital password to a random string with 8 characters
+    let password = ''
+    for (let i = 0; i < 8; i++) {
+      const randomIndex = Math.floor(Math.random() * allChars.length)
+      password += allChars.charAt(randomIndex)
+    }
+
+    return password
+  }
+
+  const [userPassword, setUserPassword] = useState(generateRandomPassword())
 
   const onChangePasswordLength = (value: any) => {
     setPasswordLength(value)
@@ -31,8 +52,16 @@ const PasswordGenerator = () => {
       </div>
       <div className="password-input-wrapper">
         <div className="password-field">
-          <input type="text" placeholder="your password" value="B9QI4PDBYY" />
-          <img src={refreshIcon} alt="refresh the password" />
+          <input
+            type="text"
+            placeholder="your password"
+            value={userPassword}
+          />
+          <img
+            src={refreshIcon}
+            alt="refresh the password"
+            onClick={() => setUserPassword(generateRandomPassword())}
+          />
         </div>
         <button className="copy-btn">
           <img src={copyIcon} alt="copy password" />
